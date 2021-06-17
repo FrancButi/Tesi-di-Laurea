@@ -1,0 +1,362 @@
+\chapter{Esperimenti e Risultati}
+In questo capitolo sono descritte le attività di Chaos Testing eseguite nell'ambito dell'esperimento Liscio. Tali attività mirano a trovare delle possibili deviazioni nel comportamento di FogMon tramite l'iniezione volontaria di fallimenti, per identificare le cause di tali deviazioni e mettere a punto FogMon sulla base di quanto scoperto. La sperimentazione ha sfruttato le risorse della federazione dei testbed offerta dal progetto Fed4Fire+, in particolare le risorse dei testbed descritti nella Sezione 3.3: Virtual Wall e CityLab. Per le caratteristiche dei nodi utilizzati, consultare \cite{pcgen2} e \cite{clnodes}.
+
+La sperimentazione è stata condotta nei giorni tra il 9 Marzo e il 3 Aprile, per un totale di 127 esperimenti. Di questi, saranno riportati solo quelli significativi per la scoperta di deviazioni. Tra i test svolti dopo la messa a punto di FogMon, sono esposti gli ultimi 10 per ogni metodo e topologia, per mostrare l'affidabilità e stabilità raggiunte dal prototipo.
+
+Nella Sezione 4.1 sono presentati gli esperimenti che hanno condotto alla scoperta degli errori di Fogmon, trovati mediante le tecniche ispirate al \textit{Chaos Testing}. Questi risultati hanno condotto a una messa a punto di FogMon, che ora è in grado di superare gli stessi test. Di questi test vediamo i risultati nella Sezione 4.2.
+
+
+Tutti i risultati saranno presentati esplicitando come prima cosa il test effettuato (i.e. \textit{Node Failure}, \textit{Link Failure} o \textit{Stress test}). Gli esperimenti, eseguiti mediante l'uso di FogMonK, seguono la stessa modalità:
+\begin{itemize}
+    \item Prima verifica delle ipotesi
+    \item Applicazione del Metodo
+    \item Seconda verifica delle ipotesi
+    \item Analisi dei risultati
+\end{itemize}
+Le tabelle presenti nelle prossime sezioni mostrano i dati di FogMonEye (misurazioni hardware di CPU e Memoria, tempo di stabilità, errore sulle misurazioni della QoS di rete) in determinati scenari. Il valore di \textit{Time to stability} indica il tempo necessario al raggiungimento delle condizioni di validità dell'ipotesi H1 in secondi. I valori di banda e latenza sono espressi in termini di errore percentuale inter-gruppo e intra-gruppo.
+    \section{Errori rilevati}
+    Di seguito si riportano i risultati più significativi nell'identificazione degli errori di FogMon. Al formato appena menzionato, saranno aggiunte informazioni utili a descrivere il contesto della deviazione:
+    \begin{itemize}
+        \item Ambiente operativo: topologia, raggiungimento della stabilità.
+        \item Evento osservato: reazione da parte di FogMon all'iniezione dei fault
+        \item Ipotesi violata (motivo per cui l'evento osservato viene considerato un errore)
+        \item Dati di FogMonEye fino alla prima stabilità
+    \end{itemize}
+        \subsection{Disconnessione inattesa dei leader}
+        Il metodo che ha evidenziato questa deviazione è il \textit{Node failure}, in particolare \textit{Leader failure} applicato a un solo Leader scelto in modo pseudocasuale su una rete di 20 nodi. Tutti i nodi sfruttati sono nodi di Virtual Wall \cite{pcgen2}, che hanno 2 CPU quad core da 2,2 GHz e 4 GB di RAM.
+        
+        Al raggiungimento della prima stabilità (rispetto di H1, H2 e H3, come descritto nella Sezione 3.1) FogMon presentava i dati esposti nelle tabelle \ref{tab:leadercrash} e \ref{tab:leadercrashqos}.
+        
+        \begin{table}[H]
+            \begin{center}
+            \caption{Dati di CPU, Memoria e \textit{Time to stability} alla prima stabilità}
+            \label{tab:leadercrash}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                    \hline
+                    Situazione & \textit{Time to stability} & CPU & Memoria\\
+                    \hline
+                    Init & 292.2 s & 1.78\% & 11.90 MB\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        \begin{table}[H]
+            \begin{center}
+            \caption{Errore sulle misurazioni di banda e latenza alla prima stabilità}
+            \label{tab:leadercrashqos}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                    \hline
+                    Situazione & Latenza intra & Banda intra & Latenza inter & Banda inter\\
+                    \hline
+                    Init & 13\% &  15\%  &  22\% &  24\%\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        Il \textit{Leader failure} ha causato un errore durante la comunicazione tra il nodo terminato e un altro leader, portando alla disconnessione inattesa di quest'ultimo. La seconda verifica delle ipotesi evidenzia dunque una deviazione nel numero di nodi presenti dopo la riconfigurazione di FogMon.
+        
+        La correzione dell'errore consiste nella modifica dei controlli sulle comunicazioni tra Leader, in modo da evitare la terminazione di FogMon su un nodo qualora questo stia comunicando con un altro nodo soggetto a un fallimento.
+        %\subsection{Errore nella configurazione iniziale di FogMon}
+        %La distribuzione iniziale di FogMon sul testbed avviene tramite la connessione di un nodo leader e dei restanti nodi follower, che si collegano provvisoriamente al primo leader (in attesa della prima riconfigurazione, volta a eleggere nuovi leader).
+        
+        
+       % Durante la fase preliminare di un \textit{node failure} test sui follower, il leader iniziale ha avviato il processo di ricalcolo, generando un numero casuale; questo, tuttavia, non era un intero positivo (nello specifico log(0)). Tale errore ha causato la disconnessione del leader e, di conseguenza, FogMon ha cessato la sua attività di monitoraggio in quanto privo di leader e incapace di riconfigurarsi.
+        
+        %L'ipotesi violata è quindi la prima. Nel caso in questione, infatti, dopo 20 minuti dall'avvio FogMon non aveva ancora comunicato con FogMonEye e non aveva effettuato riconfigurazioni, in quanto privo di leader.
+        \subsection{Divisione dei gruppi}
+        Il metodo utilizzato è il \textit{Node failure}, in particolare quattro \textit{Leader failure} e quattro \textit{Follower failure} per un totale di 8 nodi su una rete di 40. Di questi 40 nodi, 30 sono di forniti da Virtual Wall (con le stesse specifiche già menzionate), e 10 sono nodi di CityLab \cite{clnodes}, che hanno CPU quad core da 1 GHz e 4 GB di RAM.
+        
+        Al raggiungimento della prima stabilità FogMon presentava i dati esposti nelle tabelle  \ref{tab:groupsplit} e \ref{tab:groupsplitqos}.
+        
+        \begin{table}[H]
+            \begin{center}
+                \caption{Dati di CPU, Memoria e \textit{Time to stability} alla prima stabilità}
+                \label{tab:groupsplit}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                    \hline
+                    Situazione & \textit{Time to stability} & CPU & Memoria\\
+                    \hline
+                    Init & 293.6 s & 2.33\% & 24.70 MB\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        \begin{table}[H]
+            \begin{center}
+            \caption{Errore sulle misurazioni di banda e latenza alla prima stabilità}
+                \label{tab:groupsplitqos}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                    \hline
+                    Situazione & Latenza intra & Banda intra & Latenza inter & Banda inter\\
+                    \hline
+                    Init & 11\% &  12\%  &  25\% &  23\%\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        L'applicazione del metodo di \textit{Node failure} ha innescato il ricalcolo della topologia, ma la comunicazione tra due leader e il resto della rete si è interrotta; FogMonEye non era in grado di definire una stabilità perchè riceveva dati da due reti ormai separate. La seconda verifica delle ipotesi mette in luce la violazione di H1.
+        
+        L'errore era causato da un problema di sincronizzazione degli accessi al database condiviso dai leader: troppi accessi paralleli, infatti, causavano il blocco di un thread responsabile della propagazione di alcuni dati tra i leader stessi, portando infine alla separazione dei gruppi. 
+        
+        La deviazione ha permesso di identificare e correggere il bug tramite l'ottimizzazione degli accessi al database.
+        \subsection{Riconfigurazione ciclica}
+        Il metodo che ha evidenziato questa deviazione è il \textit{Link failure}, applicato a un nodo su una rete di 20.
+        
+        Al raggiungimento della prima stabilità (e quindi verificate le ipotesi H1, H2 e H3 descritte in 3.1), FogMon presentava i dati esposti nelle tabelle \ref{tab:reconfig} e \ref{tab:reconfigqos}.
+        
+        \begin{table}[H]
+            \begin{center}
+            \caption{Dati di CPU, Memoria e \textit{Time to stability} alla prima stabilità}
+            \label{tab:reconfig}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                    \hline
+                    Situazione & \textit{Time to stability} & CPU & Memoria\\
+                    \hline
+                    Init & 280.0 s & 0.95\% & 40.22 MB\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        \begin{table}[H]
+            \begin{center}
+            \caption{Errore sulle misurazioni di banda e latenza alla prima stabilità}
+            \label{tab:reconfigqos}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                    \hline
+                    Situazione & Latenza intra & Banda intra & Latenza inter & Banda inter\\
+                    \hline
+                    Init & 8\% &  9\%  &  20\% &  18\%\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        L'applicazione del metodo di \textit{Link failure} ha interrotto la comunicazione del nodo (Leader). FogMon ha rilevato un peggioramento della qualità del \textit{clustering} tramite l'indice di qualità, innescando la riconfigurazione dell'overlay di monitoraggio. Gli indici calcolati successivamente non hanno mai rispettato la soglia, causando riconfigurazioni cicliche che hanno impedito il rispetto dell'ipotesi H1.
+        
+        La modifica consiste nella messa a punto del sistema di calcolo dell'indice di qualità e nell'innalzamento della soglia limite di tale indice, per evitare che il ricalcolo venga innescato nuovamente prima di raggiungere la stabilità definita da H1.
+    \newpage   
+    \section{Risultati dopo le correzioni}
+    Riportiamo i risultati degli esperimenti dopo le correzioni menzionate nei paragrafi precedenti; sarà presentata una media dei valori del sistema a stabilità iniziale e, in seguito, la stessa media calcolata  dopo la seconda stabilità (raggiunta dopo l'iniezione dei fallimenti e l'eventuale riconfigurazione di FogMon). Come accennato in (4.1), i valori riportati sono quelli indicati da FogMonEye.
+    
+    I Metodi esposti sono quelli indicati nella Sezione 3.1, per maggiori dettagli su tutti gli esperimenti si veda l'appendice (\ref{AppA}).
+        \subsection{Metodo \textit{Node failure}}
+        Per ogni batteria da 10 esperimenti, sono stati effettuati i test esposti in Tabella \ref{tab:nodefail}. Nella consultazione, si noti che:
+        \begin{itemize}
+            \item I \textit{Follower failure} (FF) rappresentano 4 dei 10 test per ogni topologia, e prevedono il fallimento di 1, 2, 4 e 4 Follower rispettivamente,
+            \item I \textit{Leader failure} (LF) rappresentano 4 dei 10 test per ogni topologia, e prevedono il fallimento di 1, 2, 3 e 3 leader rispettivamente,
+            \item I \textit{Leader-Follower failure} (LFF) rappresentano 2 dei 10 test per ogni topologia, e prevedono il fallimento di 4 Leader e 4 Follower in ogni 'esperimento.
+        \end{itemize}
+        Questi esperimenti saranno raggruppati sotto il nome di \textit{Node failure}, dato che consistono tutti nel fallimento di uno o più nodi.
+        
+         Nelle tabelle \ref{tab:nodefail20}, \ref{tab:nodefail30} e \ref{tab:nodefail40}  sono descritti i valori della stabilità iniziale (prima verifica di H1, H2 e H3), riportati come \textit{init} e quelli della seconda stabilità (ovvero la seconda verifica di H1, H2 e H3) dopo l'applicazione del metodo \textit{Node failure} per quanto riguarda i valori di CPU, Memoria e \textit{Time to stability}. Analogamente, le tabelle \ref{tab:nodefail20qos}, \ref{tab:nodefail30qos} e \ref{tab:nodefail40qos} indicano gli errori delle rilevazioni sulla QoS di rete (banda e latenza). 
+        
+        Tutte le tabelle appena menzionate sono esposte a gruppi di due, e indicano rispettivamente le medie dei risultati degli esperimenti su topologie da 20, 30 e 40 nodi. I valori esposti si riferiscono agli ultimi 10 esperimenti effettuati su ogni topologia.
+        \newpage
+        
+        \begin{table}[H]
+            \caption{Organizzazione degli esperimenti di \textit{Node failure}}
+            \label{tab:nodefail}
+            \begin{center}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                      \hline
+                    Numero di nodi & Test & Numero di test\\
+                    \hline
+                    20 & FF & 4 \\
+ 
+                    20 & LF & 4 \\
+
+                    20 & LFF & 2 \\
+                    \hline
+                    30 & FF & 4 \\
+
+                    30 & LF & 4 \\
+
+                    30 & LFF & 2 \\
+                    \hline
+                    40 & FF & 4 \\
+
+                    40 & LF & 4 \\
+
+                    40 & LFF & 2 \\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        \begin{table}[H]
+            \caption{Dati di CPU, Memoria e \textit{Time to stability} di \textit{Node failure} su 20 nodi}
+            \label{tab:nodefail20}
+            \begin{center}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                      \hline
+                    Situazione & \textit{Time to stability} & CPU & Memoria\\
+                    \hline
+                    Init & 301.6 s & 2.12\% & 41.2 MB\\
+                    \hline
+                    Final & 291.3 s  & 3.0\% & 38.3 MB\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        \begin{table}[H]
+            \caption{Risultati degli errori di misurazione di banda e latenza degli esperimenti di \textit{Node failure} su 20 nodi}
+            \label{tab:nodefail20qos}
+            \begin{center}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                    \hline
+                    Situazione & Latenza intra & Banda intra & Latenza inter & Banda inter\\
+                    \hline
+                    Init & 8\% &  3\%  & 11\% &  10\%\\
+                    \hline
+                    Final & 7\% &  6\%  &  12\% &  14\%\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        \begin{table}[H]
+            \caption{Dati di CPU, Memoria e \textit{Time to stability} di \textit{Node failure} su 30 nodi}
+            \label{tab:nodefail30}
+            \begin{center}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                     \hline
+                    Situazione & \textit{Time to stability} & CPU & Memoria\\
+                    \hline
+                    Init & 270.1 s & 3.1\% & 39.2 MB\\
+                    \hline
+                    Final & 299.2 s  & 3.2\% & 36.2 MB\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        \begin{table}[H]
+            \caption{Risultati degli errori di misurazione di banda e latenza degli esperimenti di \textit{Node failure} su 30 nodi}
+            \label{tab:nodefail30qos}
+            \begin{center}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                    \hline
+                    Situazione & Latenza intra & Banda intra & Latenza inter & Banda inter\\
+                    \hline
+                    Init & 4\% &  9\%  & 12\% &  15\%\\
+                    \hline
+                    Final & 7\% &  4\%  &  11\% &  15\%\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        \begin{table}[H]
+            \caption{Dati di CPU, Memoria e \textit{Time to stability} di \textit{Node failure} su 40 nodi}
+            \label{tab:nodefail40}
+            \begin{center}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                     \hline
+                    Situazione & \textit{Time to stability} & CPU & Memoria\\
+                    \hline
+                    Init & 290.1 s & 0.73\% & 29.3 MB\\
+                    \hline
+                    Final & 302.6 s  & 1.9\% & 31.1 MB\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        \begin{table}[H]
+            \caption{Risultati degli errori di misurazione di banda e latenza degli esperimenti di \textit{Node failure} su 40 nodi}
+            \label{tab:nodefail40qos}
+            \begin{center}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                    \hline
+                    Situazione & Latenza intra & Banda intra & Latenza inter & Banda inter\\
+                    \hline
+                    Init & 10\% &  6\%  & 13\% &  12\%\\
+                    \hline
+                    Final & 8\% &  8\%  &  7\% &  11\%\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        Contrariamente a quanto osservato in (4.1), dopo la messa a punto di FogMon tutti i valori indicano un comportamento del prototipo nella norma. La verifica di H1, H2 e H3  effettuata tramite FogMonK, quindi, è sempre andata a buon fine.
+        \subsection{Metodo \textit{Link failure}}
+        Seguendo lo stesso criterio dei \textit{Node failure}, si riportano in tabella \ref{tab:linkfail} i risultati dei test basati sul metodo di \textit{Link failure} (Sezione 3.1.2), effettuati su topologie da 20 nodi. Di questi, 10 sfruttano i nodi offerti da Virtual Wall e 10 quelli offerti da CityLab. L'esperimento prevede la riduzione della banda disponibile su un \textit{link} fino a portarla a 0.1 Mb/s, indipendentemente dal suo valore originario, e l'aumento della latenza a 500 ms per i primi 5 esperimenti, e la stessa operazione su 2 \textit{link} selezionati randomicamente per gli altri 5.
+        
+        \begin{table}[H]
+            \caption{Dati di CPU, Memoria e \textit{Time to stability} di \textit{Link failure}}
+            \label{tab:linkfail}
+            \begin{center}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                     \hline
+                    Situazione & \textit{Time to stability} & CPU & Memoria\\
+                    \hline
+                    Init & 224.8 s & 1.7 \% & 20.1 MB\\
+                    \hline
+                    Final & 269.0 s & 1.8\% & 22.4 MB\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        \begin{table}[H]
+            \caption{Risultati degli errori di misurazione di banda e latenza degli esperimenti di \textit{Link failure} su 20 nodi}
+            \label{tab:linkfail20qos}
+            \begin{center}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                    \hline
+                    Situazione & Latenza intra & Banda intra & Latenza inter & Banda inter\\
+                    \hline
+                    Init & 6\% &  2\%  & 9\% &  12\%\\
+                    \hline
+                    Final & 5\% &  7\%  &  6\% &  18\%\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+       L'unico cambiamento osservabile è l'aumento dell'errore delle misurazioni di banda e latenza inter-gruppo, rispetto alla condizione iniziale, del 6\%. Si tratta tuttavia di un aumento minimo, che rientra ampiamente nello spettro dei valori accettabili e, pertanto, non può considerarsi una deviazione.
+        \subsection{Metodo \textit{Stress Test}}
+       Infine, sempre seguendo il criterio visto per \textit{Node failure} e \textit{Link failure}, si riportano nelle tabelle  \ref{tab:stresstest}  e  \ref{tab:stresstestqos}  i risultati del'applicazione del metodo \textit{Stress test}. Gli esperimenti sono stati condotti su topologie da 20 nodi, tutti distribuiti su Virtual Wall, e prevedono la simulazione dell'uso di 7 core sugli 8 disponibili e di 500 MB di RAM.
+        
+        \begin{table}[H]
+            \caption{Dati di CPU, Memoria e \textit{Time to stability} degli esperimenti di \textit{Stress Test}}
+            \label{tab:stresstest}
+            \begin{center}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                     \hline
+                    Situazione & \textit{Time to stability} & CPU & Memoria\\
+                    \hline
+                    Init & 299.8 s & 1.3\% & 40.0 MB\\
+                    \hline
+                    Final & 289.7 s  & 713.7\% & 530.2 MB\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        
+        \begin{table}[H]
+            \caption{Risultati degli errori di misurazione di banda e latenza degli esperimenti di \textit{Stress Test}}
+            \label{tab:stresstestqos}
+            \begin{center}
+                \begin{tabular}{|c|c|c|c|c|c|c|c|}
+                    \hline
+                    Situazione & Latenza intra & Banda intra & Latenza inter & Banda inter\\
+                    \hline
+                    Init & 4\% &  3\%  &  9\% &  8\%\\
+                    \hline
+                    Final & 5\% &  5\%  &  3\% &  10\%\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+        Si noti che il valore della CPU oltre il 100\% indica l'uso di più core (200\%, ad esempio, implica l'utilizzo del processore per una potenza pari a quella di 2 core sfruttati al massimo).
+        
+        Nel valutare i dati esposti, si consideri che l'architettura su cui sono stati svolti gli esperimenti con metodo \textit{Stress test} (pcgen2 \textit{Nodes}\cite{pcgen2}) sfrutta nodi con CPU \textit{2x Quad core Intel E5520 (2.2GHz)}. La percentuale di stress imposta dunque rispecchia quella rilevata dalle misurazioni di FogMon, come confermato dalla verifica delle ipotesi effettuata tramite FogMonK.
+        
+        Com'è facilmente osservabile, un aumento considerevole di uso della CPU ed uno più modesto dell'uso della RAM non influisce sui tempi per la stabilità nè sull'accuratezza delle misurazioni di banda e latenza.

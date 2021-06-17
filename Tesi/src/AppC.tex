@@ -1,0 +1,249 @@
+\chapter{}
+\label{AppA}
+    In tabella \ref{tab:NF20}, \ref{tab:NF30} e \ref{tab:NF40}, vediamo il risultato degli ultimi 10 esperimenti di tipo \textit{Node failure} in termini di rilevazioni di \textit{Time to stability}, CPU e Memoria. Similmente, nelle tabelle \ref{tab:nodefail20qos2}, \ref{tab:nodefail30qos2} e \ref{tab:nodefail40qos2} si riportano i dati sugli errori di misurazione di banda e latenza intergruppo e intragruppo. Gli esperimenti comprendono \textit{Leader failure}, \textit{Follower failure} e una combinazione dei due, come descritto nella Sezione 4.2. Nella consultazione, si tenga presente che la sigla FF indica \textit{Follower failure}, LF indica \textit{Leader failure} e LFF indica \textit{Leader-Follower failure}.
+    Gli esperimenti di tipo \textit{Follower failure}, come riscontrabile nelle tabelle, non causano il ricalcolo dell'overlay di FogMon
+    \begin{table}[H]
+    \caption{Dati di CPU, Memoria e \textit{Time to stability} di \textit{Node failure} su 20 nodi}
+    \label{tab:NF20}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+            \hline
+            Situazione & \textit{Time to stability} & CPU & Memoria & Ricalcolo\\
+            \hline
+            Init & 301.6 s & 2.12 \% & 41.2 MB & -\\
+            FF    & 308.1 s  & 1.8 \%  & 39.9 MB & No\\
+            FF    & 307.6 s  & 3.4 \%  & 41.2  MB & No\\
+            FF    & 295.6 s  & 1.2 \%  & 49.3  MB & No\\
+            FF    & 300.1 s  & 0.6 \%  & 39.6  MB & No\\
+            LF    & 258.5 s  & 3.6 \%  & 38.4  MB & Si\\
+            LF    & 312.9 s  & 2.3 \%  & 38.1  MB & Si\\
+            LF    & 273.2 s  & 2.7 \%  & 47.3  MB & Si\\
+            LF    & 300.1 s  & 2.7 \%  & 35    MB & Si\\
+            LFF   & 314.6 s  & 2.3 \%  & 29.1  MB & Si\\
+            LFF   & 315.2 s  & 1.6 \%  & 31.9  MB & Si\\
+            \hline
+        \end{tabular}
+        \end{center}
+    \end{table}
+    
+    \begin{table}[H]
+    \caption{Risultati degli errori di misurazione di banda e latenza degli esperimenti di \textit{Node failure} su 20 nodi}
+    \label{tab:nodefail20qos2}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+            \hline
+            Situazione & Latenza intra & Banda intra & Latenza inter & Banda inter\\
+            \hline
+            Init & 8 \%   & 3 \%   & 11 \%  & 10 \%   \\
+            FF    & 5 \%   & 9 \%   & 14 \%  & 16 \%   \\
+            FF    & 6 \%   & 3 \%   & 11 \%  & 18 \%   \\
+            FF    & 15 \%  & 4 \%   & 16 \%  \%  & 13 \%   \\
+            FF    & 10 \%  & 8 \%   & 12 \%  & 18 \%   \\
+            LF    & 5 \%   & 6 \%   & 10 \%  & 16 \%   \\
+            LF    & 10 \%  & 8 \%   & 10 \%  & 12 \%   \\
+            LF    & 3 \%   & 10 \%  & 13 \%  & 14 \%   \\
+            LF    & 3 \%   & 5 \%   & 18 \%  & 9 \%    \\
+            LFF    & 13 \%  & 6 \%   & 8 \%   & 9 \%    \\
+            LFF   & 6 \%   & 11 \%  & 10 \%  & 13 \%   \\
+            \hline
+        \end{tabular}
+        \end{center}
+    \end{table}
+        
+    \begin{table}[H]
+    \caption{Dati di CPU, Memoria e \textit{Time to stability} di \textit{Node failure} su 30 nodi}
+    \label{tab:NF30}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+            \hline
+            Situazione & \textit{Time to stability} & CPU & Memoria & Ricalcolo\\
+            \hline
+            Init & 270.1 s & 3.1 \% & 39.2 MB & -\\
+            FF    & 291.2 s  & 3.4 \%  & 30.5 MB & No\\
+            FF    & 321.6 s  & 7.9 \%  & 50.8 MB & No\\
+            FF    & 316 s  & 2.8 \%  & 31.8 MB & No\\
+            FF    & 341.3 s  & 1.3 \%  & 35.1 MB & No\\
+            LF    & 290.2 s  & 3.4 \%  & 31   MB & Si\\
+            LF    & 283.2 s  & 2.7 \%  & 44.9 MB & Si\\
+            LF    & 295.9 s  & 2.7 \%  & 39.4 MB & Si\\
+            LF    & 311.5 s  & 4.9 \%  & 33   MB & Si\\
+            LFF    & 309.3 s  & 3.5 \%  & 32.3 MB & Si\\
+            LFF   & 266.3 s  & 4.7 \%  & 37.9 MB & Si\\
+            \hline
+        \end{tabular}
+        \end{center}
+    \end{table}
+    
+    \begin{table}[H]
+    \caption{Risultati degli errori di misurazione di banda e latenza degli esperimenti di \textit{Node failure} su 30 nodi}
+    \label{tab:nodefail30qos2}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+            \hline
+            Situazione & Latenza intra & Banda intra & Latenza inter & Banda inter\\
+            \hline
+            Init & 4 \%   & 9 \%   & 12 \%  & 15 \%  \\
+            FF    & 9 \%   & 5 \%   & 14 \%  & 20 \%   \\
+            FF    & 4 \%   & 4 \%   & 8 \%   & 17 \%   \\
+            FF    & 4 \%   & 5 \%   & 11 \%  & 12 \%   \\
+            FF    & 6 \%   & 4 \%   & 9 \%   & 15 \%   \\
+            LF    & 6 \%   & 4 \%   & 11 \%  & 17 \%   \\
+            LF    & 8 \%   & 2 \%   & 12 \%  & 16 \%   \\
+            LF    & 6 \%   & 3 \%   & 16 \%  & 13 \%   \\
+            LF    & 7 \%   & 3 \%   & 10 \%  & 14 \%   \\
+            LFF    & 10 \%  & 5 \%   & 12 \%  & 17 \%   \\
+            LFF   & 6 \%   & 4 \%   & 10 \%  & 17 \%   \\
+            \hline
+        \end{tabular}
+        \end{center}
+    \end{table}
+    
+    \begin{table}[H]
+    \caption{Dati di CPU, Memoria e \textit{Time to stability} di \textit{Node failure} su 40 nodi}
+    \label{tab:NF40}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+            \hline
+            Situazione & \textit{Time to stability} & CPU & Memoria & Ricalcolo\\
+            \hline
+            Init & 290.1 s & 0.73 \% & 29.3 MB & -\\
+            FF    & 295.2 s  & 4.4 \%  & 23.1 MB & No\\
+            FF    & 307.8 s  & 0.6 \%  & 32.7 MB & No\\
+            FF    & 315.5 s  & 1.4 \%  & 37   MB & No\\
+            FF    & 304.4 s  & 2.7 \%  & 35.5 MB & No\\
+            LF    & 305 s    & 2.3 \%  & 29.5 MB & Si\\
+            LF    & 294.4 s  & 1.7 \%  & 31.7 MB & Si\\
+            LF    & 311.1 s  & 3   \%  & 33.6 MB & Si\\
+            LF    & 307.8 s  & 3.1  \% & 38.6 MB & Si\\
+            LFF    & 315.2 s  & 2   \%  & 32.9 MB & Si\\
+            LFF   & 307.5 s  & 1.2 \%  & 30.9 MB & Si\\
+            \hline
+        \end{tabular}
+        \end{center}
+    \end{table}
+    
+    \begin{table}[H]
+    \caption{Risultati degli errori di misurazione di banda e latenza degli esperimenti di \textit{Node failure} su 40 nodi}
+    \label{tab:nodefail40qos2}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+            \hline
+            Situazione & Latenza intra & Banda intra & Latenza inter & Banda inter\\
+            \hline
+            Init & 10 \%  & 6 \%   & 13 \%  & 12 \%   \\
+            FF    & 14 \%  & 9 \%   & 8 \%   & 11 \%   \\
+            FF    & 5 \%   & 7 \%   & 7 \%   & 12 \%   \\
+            FF    & 10 \%  & 6 \%   & 5 \%   & 12 \%   \\
+            FF    & 10 \%  & 7 \%   & 6 \%   & 12 \%   \\
+            LF    & 7 \%   & 6 \%   & 8 \%   & 10 \%   \\
+            LF    & 11 \%  & 7 \%   & 6 \%   & 12 \%   \\
+            LF    & 7 \%   & 10 \%  & 4 \%   & 6 \%    \\
+            LF    & 9 \%   & 7 \%   & 7 \%   & 8 \%    \\
+            LFF    & 7 \%   & 9 \%   & 5 \%   & 10 \%   \\
+            LFF   & 7 \%   & 8 \%   & 6 \%   & 7 \%    \\
+            \hline
+        \end{tabular}
+        \end{center}
+    \end{table}
+        
+        
+        Nelle tabelle \ref{tab:LF20} e \ref{tab:linkfail20qos2} vediamo il risultato degli ultimi 10 esperimenti di tipo \textit{Link Failure}.
+        
+        
+        
+    \begin{table}[H]
+    \caption{Dati di CPU, Memoria e \textit{Time to stability} di \textit{Link failure} su 20 nodi}
+    \label{tab:LF20}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+            \hline
+            Situazione & \textit{Time to stability} & CPU & Memoria\\
+            \hline
+            Init & 224.8 s & 1.7 \% & 20.1 MB\\
+            1    & 249.8 s  & 0.8  \% & 15.7 MB\\
+            2    & 257.7 s  & 1.6  \% & 23.8 MB\\
+            3    & 278.5 s  & 0.5 \%  & 23.3 MB\\
+            4    & 266.7 s  & 3   \%  & 19.2 MB\\
+            5    & 282.9 s  & 1.3 \%  & 16.9 MB\\
+            6    & 289.1 s  & 0.8 \%  & 24.7 MB\\
+            7    & 294.8 s  & 1.4 \%  & 19   MB\\
+            8    & 293.8 s  & 4.2 \%  & 28.2 MB\\
+            9    & 254.9 s  & 1.1 \%  & 14.4 MB\\
+            10   & 262.1 s  & 2.2 \%  & 23   MB\\
+            \hline
+        \end{tabular}
+        \end{center}
+    \end{table}
+    
+    \begin{table}[H]
+    \caption{Risultati degli errori di misurazione di banda e latenza degli esperimenti di \textit{Node failure} su 20 nodi}
+    \label{tab:linkfail20qos2}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+            \hline
+            Situazione & Latenza intra & Banda intra & Latenza inter & Banda inter\\
+            \hline
+            Init & 6 \%   & 2 \%   & 9 \%   & 12 \%   \\
+            1    & 5 \%   & 7 \%   & 6 \%   & 13 \%   \\
+            2    & 7 \%   & 13 \%  & 8 \%   & 19 \%   \\
+            3    & 2 \%   & 6 \%   & 5 \%   & 18 \%   \\
+            4    & 4 \%   & 10 \%  & 4 \%   & 22 \%   \\
+            5    & 5 \%   & 10 \%  & 6 \%   & 18 \%   \\
+            6    & 4 \%   & 5 \%   & 4 \%   & 20 \%   \\
+            7    & 4 \%   & 6 \%   & 3 \%   & 19 \%   \\
+            8    & 6 \%   & 9 \%   & 6 \%   & 23 \%   \\
+            9    & 6 \%   & 7 \%   & 6 \%   & 21 \%   \\
+            10   & 4 \%   & 4 \%   & 9 \%   & 16 \%   \\
+            \hline
+        \end{tabular}
+        \end{center}
+    \end{table}
+        Nelle tabelle \ref{tab:st20} e \ref{tab:stresstest20qos2} vediamo il risultato degli ultimi 10 esperimenti di tipo \textit{Stress Test}.
+    \begin{table}[H]
+    \caption{Dati di CPU, Memoria e \textit{Time to stability} di \textit{Stress test} su 20 nodi}
+    \label{tab:st20}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+            \hline
+            Situazione & \textit{Time to stability} & CPU & Memoria\\
+            \hline
+            Init & 299.8 s & 1.3\% & 40.0 MB\\
+            1    & 283.5 s  & 713.4\% & 510.8 MB\\
+            2    & 311.2 s  & 710.3\% & 524.3 MB\\
+            3    & 262.7 s  & 715.3\% & 527.1 MB\\
+            4    & 267.3 s  & 711.8\% & 506.6 MB\\
+            5    & 303.8 s  & 710.9\% & 528.5 MB\\
+            6    & 262.5 s  & 728.8\% & 524.8 MB\\
+            7    & 297.5 s  & 731.3\% & 512.2 MB\\
+            8    & 287.9 s  & 721.1\% & 521.6 MB\\
+            9    & 302.7 s  & 706.5\% & 515.5 MB\\
+            10   & 270.7 s  & 724.9\% & 539  MB\\
+            \hline
+        \end{tabular}
+        \end{center}
+    \end{table}
+    
+    \begin{table}[H]
+    \caption{Risultati degli errori di misurazione di banda e latenza degli esperimenti di \textit{Stress test} su 20 nodi}
+    \label{tab:stresstest20qos2}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+            \hline
+            Situazione & Latenza intra & Banda intra & Latenza inter & Banda inter\\
+            \hline
+            Init & 4 \% & 3 \% & 9 \% & 8 \%  \\
+            1    & 4 \% & 2 \% & 2 \% & 11 \% \\
+            2    & 8 \% & 4 \% & 2 \% & 12 \% \\
+            3    & 9 \% & 4 \% & 4 \% & 11 \% \\
+            4    & 4 \% & 2 \% & 3 \% & 11 \% \\
+            5    & 6 \% & 6 \% & 3 \% & 12 \% \\
+            6    & 6 \% & 7 \% & 5 \% & 11 \%  \\
+            7    & 2 \% & 6 \% & 4 \% & 8  \% \\
+            8    & 12 \% & 8 \% & 4 \% & 8  \% \\
+            9    & 4 \% & 8 \% & 3 \%  & 10 \% \\
+            10   & 11 \% & 6 \% & 4 \% & 10 \% \\
+            \hline
+        \end{tabular}
+        \end{center}
+    \end{table}
+\newpage

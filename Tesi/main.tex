@@ -1,0 +1,96 @@
+\documentclass[12pt]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{titlepic}
+\usepackage{appendix}
+\usepackage{float}
+\usepackage{csquotes}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=none,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\addto\captionsenglish{\renewcommand{\figurename}{Fig.}}
+\usepackage[sorting=none]{biblatex}
+\renewbibmacro{in:}{}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\addbibresource{./bib.bib}
+
+\title{\includegraphics[width=5cm, height=5cm]{images/Stemma_unipi.png}
+    \\\textsc{\small Laurea in Informatica (classe L-31)\\Dipartimento di Informatica\\Università di Pisa}\\\vfill Sperimentazione di Chaos testing per il monitoraggio di un’infrastruttura Fog federata}
+\date{}
+
+\begin{document}
+
+
+
+\begin{titlepage}
+
+\begin{center}
+    \includegraphics[width=5cm, height=5cm]{images/Stemma_unipi.png}
+    \\\textsc{Laurea in Informatica (classe L-31)\\Dipartimento di Informatica\\Università di Pisa}
+\end{center}
+
+\begingroup
+\let\newpage\relax%
+\maketitle
+\endgroup
+\begin{multicols}{3}
+\noindent
+\\\\\textbf{Relatori:}\\Federica Paganelli\\Antonio Brogi\\Stefano Forti\\ \columnbreak\linebreak \columnbreak\linebreak
+\\\\\textbf{Candidato:}\\Francesco Buti
+\end{multicols}
+\end {titlepage}
+
+\newpage
+\renewcommand{\contentsname}{Indice}
+\renewcommand{\listfigurename}{Indice delle Figure}
+\renewcommand{\listtablename}{Indice delle Tabelle}
+\tableofcontents
+
+\newpage
+\listoftables
+\listoffigures
+
+\input{src/cap1}
+
+\input{src/cap2}
+
+\input{src/cap3}
+
+\input{src/cap4}
+
+\input{src/cap5}
+
+\newpage
+\printbibliography
+
+\newpage
+\appendix
+%\input{src/AppA}
+
+%\input{src/AppB}
+
+\input{src/AppC}
+
+\end{document}

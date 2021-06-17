@@ -1,0 +1,38 @@
+\chapter{Introduzione}
+In questo capitolo sono descritti il contesto (Sezione 1.1) (cloud computing, fog computing, chaos engineering), gli obiettivi e la metodologia della tesi (Sezione 1.2), di cui infine sarà presentata la struttura (Sezione 1.3).
+    \section{Contesto}
+    Nell'ultimo decennio, il \textit{cloud computing} si è affermato come un modello per consentire l'accesso di rete onnipresente, conveniente e su richiesta a un insieme condiviso di risorse informatiche configurabili (ad esempio, reti, server, archiviazione, applicazioni e servizi), che può essere fornito e rilasciato rapidamente con il minimo sforzo di gestione o interazione con il fornitore di servizi \cite{nistcloud}.Si tratta dunque di un modello che si fonda sulla flessibilità e scalabilità dei sistemi IT, che consente di ottenere una rapidità di implementazione dei servizi cloud stessi e, d’altra parte, maggiori affidabilità e continuità di servizio \cite{treccani}. Proposto per la prima volta nel 2014 \cite{fog} come estensione del paradigma cloud, il Fog Computing è un modello a più livelli che facilita la scalabilità delle risorse di calcolo dal cloud all'\textit{Internet of Things} (IoT). Il Fog facilita l'implementazione di applicazioni e servizi distribuiti, e si compone di nodi fisici o virtuali, residenti tra i dispositivi IoT e i servizi centralizzati Cloud. I nodi fog possono essere organizzati in gruppi verticalmente (per supportare l'isolamento) o orizzontalmente (per supportare la federazione) così da ridurre al minimo il tempo di richiesta-risposta da e verso le applicazioni supportate \cite{nistfog}. Gli ambienti Fog sono caratterizzati da:
+    \begin{itemize}
+        \item Presenza pervasiva di risorse di calcolo al limitare (\textit{edge}) della rete, location awareness e basse latenze
+        \item Elevata distribuzione geografica
+        \item Vasta reti di sensori/attuatori
+        \item Mobilità dei nodi
+        \item Eterogeneità delle risorse e delle tecnologie di comunicazione
+        \item Interoperabilità e federazione di infrastrutture
+    \end{itemize}
+    Nel complesso, il Fog rappresenta al tempo stesso un'estensione e un miglioramento del paradigma Cloud, in supporto ad applicazioni IoT che debbano rispettare precisi parametri di Qualità di Servizio (QoS), in particolare la bassa latenza sulle connessioni \cite{brogi-forti}.
+    In questo contesto, FogMon \cite{FogMon} è stato recentemente proposto come soluzione di monitoraggio di infrastrutture in modo non invasivo, che fosse in grado di tollerare cambiamenti e fallimenti dell'infrastruttura monitorata. FogMon è il prototipo di un servizio di monitoraggio distribuito open source, scritto in C++ e in grado di monitorare l'hardware e le risorse virtualizzate su diversi nodi di elaborazione Cloud-IoT, la \emph{QoS} di rete tra tali nodi (in termini di misurazioni di banda e latenza end-to-end), nonché i dispositivi IoT disponibili. Inoltre, è dotato di una topologia di overlay peer-to-peer auto-organizzante con meccanismi di auto-ristrutturazione e aggiornamenti di monitoraggio differenziale, che offrono scalabilità, tolleranza agli errori e basso sovraccarico di comunicazione. Una prima sperimentazione di FogMon è avvenuta su un'infrastruttura di piccola scala (13 nodi) nell'area di Pisa \cite{FogMon}.
+    
+    
+    Per sperimentare e mettere a punto FogMon in ambienti di più larga scala, il gruppo di ricerca ``Service-Oriented, Cloud and Fog Computing" (SOCC) dell'Università di Pisa ha condotto e portato a termine il progetto LiSCIo (\textit{Lightweight Self-Adaptive Cloud and IoT Monitoring across Fed4Fire+ testbeds}), finanziato dal progetto europeo Fed4Fire+ nel programma Horizon 2020 \cite{Horizon}.
+    
+    Il lavoro oggetto di questa tesi si inserisce nel più ampio contesto di LiSCIo, con l'ambizione di sperimentare tecniche ispirate al Chaos Engineering \cite{gremlinchaos} per contribuire all'obiettivo di LiSCIo di testare e migliorare FogMon. Il Chaos Engineering, infatti, è stato recentemente proposto e utilizzato per testare la capacità di sistemi distribuiti su larga scala di resistere a condizioni ``turbolente", anche in ambiente di produzione. Non a caso, le tecniche di Chaos Engineering sono sempre più usate in ambito Cloud e Fog \cite {princofchaos} e sono sembrate un candidato ideale per contribuire agli esperimenti di LiSCIo.
+    \section{Obiettivi e Metodologia}
+    L'obiettivo di questa tesi è quello di testare FogMon sfruttando tecniche ispirate al chaos engineering per individuare i suoi eventuali punti di debolezza, in modo da correggerli e migliorare l'affidabilità del prototipo.
+    
+    
+    La tesi è stata suddivisa in tre fasi: 
+    \begin{itemize}
+        \item La prima parte è stata dedicata alla formazione e ricerca delle basi teoriche preliminari, in particolare è stato effettuato uno studio delle tecniche di chaos engineering e una ricerca degli strumenti adatti per l’adozione di tali tecniche su un’architettura distribuita.
+        \item La seconda fase ha previsto la realizzazione di un programma di supporto, in grado di automatizzare i test su un’istanza di Fogmon, dispiegata su una porzione dell'infrastruttuta federata Fed4Fire+ \cite{Fed4Fire+} senza la necessità di intervento manuale per l'esecuzione dei comandi, nè per le fasi di raccolta e di analisi dei dati 
+        \item La terza fase prevede la stesura di un piano degli esperimenti, la loro esecuzione e la raccolta dei dati sul comportamento di Fogmon, per trarre conclusioni sul suo funzionamento e suggerire eventuali messe a punto 
+    \end{itemize}
+    \section{Struttura della Tesi}
+    La seguente sezione presenta una sintesi della struttura della presente tesi divisa per capitoli.
+    \begin{description}
+    \item [Capitolo 2] Il secondo capitolo illustra le conoscenze preliminari. In particolare, la prima parte si focalizza sul sistema oggetto della sperimentazione di Chaos Testing, ossia FogMon, un programma per il monitoraggio delle risorse e delle applicazioni distribuite su nodi in ambiente Fog. La seconda parte di questa sezione presenta le basi teoriche e il concetto di chaos engineering; lo studio delle tecniche qui riportate è stato fondamentale per la ricerca degli strumenti necessari a testare FogMon, oltre all’organizzazione del piano di test. La conclusione di questo capitolo vedrà anche una breve presentazione del testbed (Fed4Fire) che ha fornito le risorse computazionali e di rete necessarie per lo svolgimento degli esperimenti.
+    \item [Capitolo 3] Il terzo capitolo evidenzia la progettazione del piano di test e degli obiettivi della sperimentazione, per poi porre l'attenzione sul programma creato per automatizzare gli esperimenti; verrà inoltre presentato il processo di scelta degli strumenti di chaos engineering usati per svolgere la batteria di test su istanze di Fogmon.
+    \item [Capitolo 4] Il quarto capitolo termina la descrizione del lavoro svolto con un resoconto dei test effettuati e dei risultati ottenuti. Questi ultimi si sono rivelati utili a migliorare FogMon stesso e a fornire indicazioni su possibli malfunzionamenti.
+    \item [Capitolo 5] Nel quinto capitolo, conclusivo, si esamina il percorso svolto durante la tesi, al fine di comparare gli obiettivi raggiunti con quelli inizialmente prefissi; verrà poi svolta una considerazione finale sull’applicabilità delle tecniche viste in altri progetti, con tutti gli eventuali limiti.
+    \end{description}
+    
